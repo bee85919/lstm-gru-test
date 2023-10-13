@@ -3,7 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import yfinance as yf
-import sklearn
+import time
 
 
 # 아마존의 2013년 부터 2018년까지 일일 주가를 학습 데이터로
@@ -150,10 +150,22 @@ def GRU_model(X_train, y_train, X_test, sc):
     return my_GRU_model, GRU_prediction 
 
 
+# 학습 시작 전 시간 저장
+start_time = time.time()
+
+
 # 그래프
 my_GRU_model, GRU_prediction = GRU_model(X_train, y_train, X_test, sc)
 GRU_prediction[1:10]
 # actual_pred_plot(GRU_prediction)
+
+
+# 학습 후 시간 저장
+end_time = time.time()
+
+
+# 걸린 시간 계산
+elapsed_time = end_time - start_time
 
 
 y_pred_gru = pd.DataFrame(GRU_prediction[:, 0])
@@ -162,3 +174,4 @@ y_test_gru.reset_index(drop=True, inplace=True)
 
 
 print(confirm_result(y_test_gru, y_pred_gru))
+print(f"GRU 모델 학습에 걸린 시간은 {elapsed_time:.2f}초 입니다.")
